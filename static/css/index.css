@@ -1,0 +1,30 @@
+/* Base CSS file */
+
+aside.notifs {
+  position: fixed;
+  right: 15px;
+  top: 15px;
+  width: 30%;
+}
+
+aside.notifs ul {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+aside.notifs ul li.notif {
+  padding: 10px;
+  padding-left: 30px;
+  width: calc( 100% - 40px );
+  border: 1px solid rgba(200,200,200,0.8);
+  background-color: rgba(230,230,230,0.8);
+  border-radius: 8px;
+  font-family: sans-serif;
+}
+
+aside.notifs ul li.notif.notif-info {
+  background: url("/static/img/iconInfo.png") no-repeat left center;
+  border: 1px solid rgba(100,150,220,0.8);
+  background-color: rgba(100,175,200,0.8);
+}
