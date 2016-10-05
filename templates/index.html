@@ -1,26 +1,13 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Hello</title>
-    <link rel="stylesheet" href="/static/css/index.css"/>
-  </head>
-  <body>
-    <h1>Hello Napier !</h1>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <aside class="notifs">
-        <ul>
-          {% for flash in messages %}
-            <li class="notif notif-info">{{ flash }}</li>
-          {% endfor %}
-        </ul>
-      </aside>
-    {% endif %}
-    {% endwith %}
+{% extends 'base.html' %}
 
-    <section>
-      <p>some content</p>
-    </section>
-  </body>
-</html>
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section>
+  <article  class="container">
+    <h2>Bootstrap test using Flask Python framework</h2>
+    <p class="lead">This is an example paragraph in a demo page for the Bootstrap CSS and JavaScript framework.</p>
+    <p>The content is hosted and served by a python server, using the Flask framework.</p>
+  </article>
+</section>
+{% endblock %}
