@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% import 'macro_common.html' as mCommon %}
+
+{% block title %}Universes{% endblock %}
+
+{% block content %}
+<section>
+  <article class="container">
+    <h2>List of available universes</h2>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tincidunt massa at placerat vehicula.
+      Nulla feugiat pellentesque fermentum. Pellentesque habitant morbi tristique senectus et netus et
+      malesuada fames ac turpis egestas. Fusce tempus maximus elit vitae lobortis. Praesent nec ornare velit,
+      nec pulvinar ante. Aenean laoreet turpis dui. Proin nec magna ut magna dignissim fringilla.
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in quam nec magna dignissim venenatis.
+      Integer consectetur justo libero, vitae imperdiet mi tincidunt id. Aenean facilisis pretium feugiat.
+    </p>
+  </article>
+  <article class="container">
+    <div class="">
+      {% for univ in data.list %}
+        {{ mCommon.univCard(univ, data.config) }}
+      {% endfor %}
+    </div>
+    <nav class="pagination-nav" aria-label="...">
+      <ul class="pagination">
+        <li class="disabled">
+          <a href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+        <li><a href="?page=2">2</a></li>
+        <li><a href="?page=3">3</a></li>
+        <li>
+          <a href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </article>
+</section>
+{% endblock %}

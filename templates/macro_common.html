@@ -1,7 +1,38 @@
 {% macro navItem(item, active) %}
   {% if item.path == active %}
-    <li class="active"><a href="#">{{ item.name}} <span class="sr-only">(current)</span></a></li>
+    <li class="active"><a href="{{ active }}">{{ item.name}} <span class="sr-only">(current)</span></a></li>
   {% else %}
     <li><a href="{{ item.path }}">{{ item.name}}</a></li>
   {% endif %}
+{% endmacro %}
+
+{% macro univCard(univ, config) %}
+    <div class="univ-card col-md-12">
+      <div class="row">
+        <div class="col-md-4">
+          {% if univ.pic %}
+            <img class="univ-pic" src="{{ univ.pic }}" alt="Universe picture" />
+          {% else %}
+            <img class="univ-pic" src="{{ url_for('static', filename=config.graphic.default_universe_pic) }}" alt="Universe picture" />
+          {% endif %}
+          <small class="univ-id">#{{ univ.id }}</small>
+        </div>
+        <div class="col-md-8">
+          <h3 class="univ-name">{{ univ.name }}</h3>
+          <p>{{ univ.short_desc }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 univ-tags">
+          <ul>
+            {% for tag in univ.tags %}
+              <li class="univ-tag"><i class="fa fa-tag"></i> <span class="text">{{ tag }}</span></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="col-md-4 text-right">
+          <a href="/universes/{{ univ.id }}" class="btn btn-primary">Details <i class="fa fa-caret-right"></i></a>
+        </div>
+      </div>
+    </div>
 {% endmacro %}

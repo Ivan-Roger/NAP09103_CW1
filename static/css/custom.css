@@ -1,0 +1,53 @@
+body {
+  padding-top: 50px;
+}
+
+#alerts {
+  position: fixed;
+  top: 60px;
+  right: 10px;
+  width: 33%;
+}
+
+#alerts .alert .text {
+  padding-left: 10px;
+  font-weight: bold;
+}
+
+.pagination-nav {
+  width: 100%;
+  text-align: center;
+}
+
+/* --- Universes --- */
+
+.univ-card {
+  border: 1px solid rgba(220, 220, 220, 0.8);
+  border-radius: 7px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.univ-card .univ-pic {
+  padding-top: 10px;
+  max-width: 100%;
+}
+
+.univ-card .univ-id {
+  text-align: center;
+  color: #BBB;
+  width: 100%;
+  display: block;
+}
+
+.univ-card .univ-tags ul {
+  list-style-type: none;
+  margin: 0px;
+  margin-top: 5px;
+  padding: 0px;
+}
+
+.univ-card .univ-tags ul li.univ-tag {
+  display: inline-block;
+  margin-right: 7px;
+}

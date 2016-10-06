@@ -1,0 +1,16 @@
+[
+	{
+		"id": "u922368", "name": "Doctor Who",
+		"pic": "http://culturefly.co.uk/wp-content/uploads/2014/02/doctor-who-logo.jpg",
+		"short_desc": "The universe of the BBC series Doctor Who, both pre and post 2005 series.",
+		"tags": ["BBC", "TV"]
+	}, {
+		"id": "u922369", "name": "Marvel",
+		"short_desc": "The universe of Marvel comics.",
+		"tags": ["Comics", "Books"]
+	}, {
+		"id": "u922370", "name": "DC",
+		"short_desc": "The universe of DC comics.",
+		"tags": ["Comics", "Books"]
+	}
+]
