@@ -1,0 +1,14 @@
+{
+  "id": "u137068", "name": "Doctor Who",
+  "pic": "http://culturefly.co.uk/wp-content/uploads/2014/02/doctor-who-logo.jpg",
+  "short_desc": "The universe of the BBC series Doctor Who, both pre and post 2005 series.",
+  "full_desc": "The Doctor, from a race called the Time Lords whose home planet is Gallifrey, travels through time and space in his ship the TARDIS (an acronym for Time and Relative Dimensions In Space) with numerous companions. From time to time he regenerates into a new form (which is how the show has been running since 1963).",
+  "tags": ["BBC", "TV"],
+  "medias": {
+    "tv_series": {
+      "imdb_id": "tt0436992"
+    },
+    "books": ["0-426-20330-5"]
+  },
+  "characters": ["c657945"]
+}
