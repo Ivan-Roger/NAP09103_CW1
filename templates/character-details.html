@@ -1,19 +1,35 @@
 {% extends 'base.html' %}
 
-{% block title %}About{% endblock %}
+{% block title %}Character: {{data.char.name}}{% endblock %}
 
 {% block content %}
 <section>
-  <article class="container">
-    <h2>About {{ data.config['app_name'] }}</h2>
-    <p>
-      This is an application developped by {{ data.config['app_author'] }} for the first coursework
-      in the module with the barbaric name of SET09103. This module is refered to as
-      "Advanced Web Technologies".
-    </p>
-  </article>
-  <article class="container">
-    fwdxgfv
-  </article>
+  <header class="details-head">
+    <img class="details-backpic" src="{{data.char.pic}}" alt="Character image" />
+    <h2 class="details-title"><small>#{{data.char.id}}</small> Character: {{data.char.name}}</h2>
+  </header>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">
+        <article>
+          <h3>Details</h3>
+          <p class="details-shortdesc"><i>{{ data.char.short_desc|safe }}</i></p>
+          <p class="details-fulldesc">{{ data.char.full_desc|safe }}</p>
+        </article>
+        <article>
+          <h3>Tags</h3>
+          <ul class="item-tags">
+            {% for tag in data.char.tags %}
+              <li class="item-tag"><i class="fa fa-tag"></i> <a href="/characters?tags={{tag}}" class="text">{{ tag }}</a></li>
+            {% endfor %}
+          </ul>
+        </article>
+      </div>
+      <aside class="col-md-3">
+        <h3>Universe</h3>
+        <a href="/universes/{{data.char.universe}}">See universe page...</a>
+      </aside>
+    </div>
+  </div>
 </section>
 {% endblock %}

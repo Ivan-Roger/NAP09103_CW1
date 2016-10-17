@@ -19,35 +19,70 @@ body {
   text-align: center;
 }
 
-/* --- Universes --- */
+/* --- Lists --- */
+/* Item card */
 
-.univ-card {
+.item-card {
   border: 1px solid rgba(220, 220, 220, 0.8);
   border-radius: 7px;
   padding-bottom: 10px;
   margin-bottom: 10px;
 }
 
-.univ-card .univ-pic {
+.item-card .item-pic {
   padding-top: 10px;
   max-width: 100%;
+  max-height: 150px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.univ-card .univ-id {
+.item-card .item-id {
   text-align: center;
   color: #BBB;
   width: 100%;
   display: block;
 }
 
-.univ-card .univ-tags ul {
+.item-tags {
   list-style-type: none;
   margin: 0px;
   margin-top: 5px;
   padding: 0px;
 }
 
-.univ-card .univ-tags ul li.univ-tag {
+.item-tags li.item-tag {
   display: inline-block;
   margin-right: 7px;
+}
+
+/* --- Details --- */
+/* Details */
+header.details-head {
+  background-image: url("/static/img/bg_01.jpg");
+  background-color: #1F1E23;
+  max-height: 350px;
+  margin-bottom: 20px;
+  box-shadow: 0px 5px 5px;
+  position: relative;
+}
+
+header.details-head .details-backpic {
+  max-width: 100%;
+  max-height: 350px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+header.details-head h2.details-title {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  color: #BBB;
+  background-color: rgba(50, 50, 50, 0.8);
+  border-top: 1px solid rgba(80,80,80,0.9);
+  border-bottom: 1px solid rgba(80,80,80,0.9);
 }

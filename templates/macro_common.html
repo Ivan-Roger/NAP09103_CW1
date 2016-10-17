@@ -7,31 +7,62 @@
 {% endmacro %}
 
 {% macro univCard(univ, config) %}
-    <div class="univ-card col-md-12">
+    <div class="item-card col-md-12">
       <div class="row">
         <div class="col-md-4">
           {% if univ.pic %}
-            <img class="univ-pic" src="{{ univ.pic }}" alt="Universe picture" />
+            <img class="item-pic" src="{{ univ.pic }}" alt="Universe picture" />
           {% else %}
-            <img class="univ-pic" src="{{ url_for('static', filename=config.graphic.default_universe_pic) }}" alt="Universe picture" />
+            <img class="item-pic" src="{{ url_for('static', filename=config.graphic.default_universe_pic) }}" alt="Universe picture" />
           {% endif %}
-          <small class="univ-id">#{{ univ.id }}</small>
+          <small class="item-id">#{{ univ.id }}</small>
         </div>
         <div class="col-md-8">
-          <h3 class="univ-name">{{ univ.name }}</h3>
+          <h3 class="item-name">{{ univ.name }}</h3>
           <p>{{ univ.short_desc }}</p>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-8 univ-tags">
-          <ul>
+        <div class="col-md-8">
+          <ul class="item-tags">
             {% for tag in univ.tags %}
-              <li class="univ-tag"><i class="fa fa-tag"></i> <span class="text">{{ tag }}</span></li>
+              <li class="item-tag"><i class="fa fa-tag"></i> <a href="/universes?tags={{tag}}" class="text">{{ tag }}</a></li>
             {% endfor %}
           </ul>
         </div>
         <div class="col-md-4 text-right">
           <a href="/universes/{{ univ.id }}" class="btn btn-primary">Details <i class="fa fa-caret-right"></i></a>
+        </div>
+      </div>
+    </div>
+{% endmacro %}
+
+{% macro charCard(char, config) %}
+    <div class="item-card col-md-12">
+      <div class="row">
+        <div class="col-md-4">
+          {% if char.pic %}
+            <img class="item-pic" src="{{ char.pic }}" alt="Character picture" />
+          {% else %}
+            <img class="item-pic" src="{{ url_for('static', filename=config.graphic.default_character_pic) }}" alt="Universe picture" />
+          {% endif %}
+          <small class="item-id">#{{ char.id }}</small>
+        </div>
+        <div class="col-md-8">
+          <h3 class="item-name">{{ char.name }}</h3>
+          <p>{{ char.short_desc }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <ul class="item-tags">
+            {% for tag in char.tags %}
+              <li class="item-tag"><i class="fa fa-tag"></i> <a href="/characters?tags={{tag}}" class="text">{{ tag }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="col-md-4 text-right">
+          <a href="/characters/{{ char.id }}" class="btn btn-primary">Details <i class="fa fa-caret-right"></i></a>
         </div>
       </div>
     </div>

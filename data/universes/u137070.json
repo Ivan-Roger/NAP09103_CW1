@@ -1,0 +1,11 @@
+{
+  "id": "u137070", "name": "DC Comics",
+  "pic": "http://gritaradio.com/files/2013/05/DC-comics.jpg",
+  "short_desc": "The universe of the DC comics and movies.",
+  "full_desc": "TODO!",
+  "tags": ["Comics", "Movies"],
+  "medias": {
+    "tv_series": ["tt3107288", "tt2193021"]
+  },
+  "characters": []
+}

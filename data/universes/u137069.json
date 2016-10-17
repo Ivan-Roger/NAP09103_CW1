@@ -1,0 +1,12 @@
+{
+  "id": "u137069", "name": "Marvel Comics",
+  "pic": "http://www.geeklegacy.com/wp-content/uploads/2012/11/Marvel.jpg",
+  "short_desc": "The universe of the Marvel comics, both in comics and movies.",
+  "full_desc": "Marvel counts among its characters such well-known superheroes such as Iron Man, Captain America, Hulk, Thor, Spider-Man, Wolverine and Ant-Man, such teams as the Avengers, the Guardians of the Galaxy, the Fantastic Four, the X-Men and the Inhumans, with antagonists such as Doctor Doom, Red Skull, Green Goblin, Ultron, Doctor Octopus, Thanos, Magneto and Loki. Most of Marvel's fictional characters operate in a single reality known as the Marvel Universe, with locations that mirror real-life cities. Characters such as Spider-Man, the Fantastic Four, the Avengers, Daredevil and Doctor Strange are based in New York City, whereas the X-Men have historically been based in Salem Center, New York and Hulk's stories often have been set in the American Southwest.",
+  "tags": ["Comics", "Movies"],
+  "medias": {
+    "tv_series": ["tt4501242"],
+    "movies": ["tt0848228"]
+  },
+  "characters": []
+}
