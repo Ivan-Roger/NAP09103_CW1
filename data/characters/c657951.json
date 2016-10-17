@@ -1,0 +1,10 @@
+{
+  "id": "c657951", "name": "The Daleks",
+  "universe": "u137068",
+  "pic": "http://media.creativebloq.futurecdn.net/sites/creativebloq.com/files/images/2013/03/dalek1.jpg",
+  "short_desc": "**TODO!**",
+  "full_desc": "**TODO!**",
+  "allies": ["c657945"],
+  "enemies": [],
+  "tags": ["Villain", "Alien"]
+}
