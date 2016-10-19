@@ -5,7 +5,7 @@ import json
 import markdown
 from os import listdir
 from os.path import basename
-from flask import Flask, render_template, flash, redirect, url_for
+from flask import Flask, render_template, flash, redirect, url_for, request
 
 # --- --- GLOBAL VARS --- ---
 
@@ -44,6 +44,11 @@ def route_about():
 @app.route('/universes')
 def route_universes():
 	data = {'config': app_config, 'nav': app_nav, 'active': "/universes", 'list': getUniverseList()}
+	if 'tags' in request.args:
+		tag_filter = request.args['tags']
+		print "Filtered request:", tag_filter
+		data['list'] = filterList(getUniverseList(), tag_filter)
+		data['search'] = tag_filter
 	return render_template('universes.html', data=data)
 
 @app.route('/universes/<univID>')
@@ -58,6 +63,11 @@ def route_universe(univID):
 @app.route('/characters')
 def route_characters():
 	data = {'config': app_config, 'nav': app_nav, 'active': "/characters", 'list': getCharacterList()}
+	if 'tags' in request.args:
+		tag_filter = request.args['tags']
+		print "Filtered request:", tag_filter
+		data['list'] = filterList(getCharacterList(), tag_filter)
+		data['search'] = tag_filter
 	return render_template('characters.html', data=data)
 
 @app.route('/characters/<charID>')
@@ -73,6 +83,13 @@ def parseDown(item):
 	item['short_desc'] = markdown.markdown(item['short_desc'])
 	item['full_desc'] = markdown.markdown(item['full_desc'])
 	return item
+
+def filterList(inList, tag):
+	outList = []
+	for item in inList:
+		if tag in item['tags']:
+			outList.append(item)
+	return outList
 
 def getUniverseList():
 	return data_cache['universes'].values()
