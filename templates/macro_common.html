@@ -19,7 +19,7 @@
         </div>
         <div class="col-md-8">
           <h3 class="item-name">{{ univ.name }}</h3>
-          <p>{{ univ.short_desc }}</p>
+          <p>{{ univ.short_desc|safe }}</p>
         </div>
       </div>
       <div class="row">
@@ -49,13 +49,17 @@
           <small class="item-id">#{{ char.id }}</small>
         </div>
         <div class="col-md-8">
-          <h3 class="item-name">{{ char.name }}</h3>
-          <p>{{ char.short_desc }}</p>
+          <h3 class="item-name">
+            {{ char.name }}
+            <small><a href="/universes/{{char.universe.id}}">{{ char.universe.name }}</a></small>
+          </h3>
+          <p>{{ char.short_desc|safe }}</p>
         </div>
       </div>
       <div class="row">
         <div class="col-md-8">
           <ul class="item-tags">
+            <li class="item-tag"><i class="fa fa-globe"></i> <a href="/characters?univ={{char.universe.id}}" class="text">{{ char.universe.name }}</a></li>
             {% for tag in char.tags %}
               <li class="item-tag"><i class="fa fa-tag"></i> <a href="/characters?tags={{tag}}" class="text">{{ tag }}</a></li>
             {% endfor %}

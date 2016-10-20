@@ -24,10 +24,28 @@
             {% endfor %}
           </ul>
         </article>
+        <div class="row">
+          <article class="col-md-6">
+            <h3>Allies</h3>
+            <ul class="details-allies">
+              {% for ally in data.char.allies %}
+                <li class="details-allies-item"><i class="fa fa-user"></i> <a href="/characters/{{ally.id}}" class="text">{{ ally.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </article>
+          <article class="col-md-6">
+            <h3>Enemies</h3>
+            <ul class="details-enemies">
+              {% for enemy in data.char.enemies %}
+                <li class="details-enemies-item"><i class="fa fa-user"></i> <a href="/characters/{{enemy.id}}" class="text">{{ enemy.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </article>
+        </div>
       </div>
       <aside class="col-md-3">
         <h3>Universe</h3>
-        <a href="/universes/{{data.char.universe}}">See universe page...</a>
+        <a href="/universes/{{data.char.universe.id}}"><b>{{data.char.universe.name}}</b> details ...</a>
       </aside>
     </div>
   </div>

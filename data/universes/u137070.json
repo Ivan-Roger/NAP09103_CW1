@@ -7,5 +7,7 @@
   "medias": {
     "tv_series": ["tt3107288", "tt2193021"]
   },
-  "characters": []
+  "related": {
+    "characters": []
+  }
 }
