@@ -1,6 +1,10 @@
 # MetaChar #
 *Advanced Web Technologies / Coursework 1*
 
+_**MetaChar**_ is a web catalog about fictional characters and their universe.
+This application runs using the Python Flask environement and has been developed under
+the portable Linux edition called [Levinux](http://levinux.com).
+
 ## Folder organisation ##
 
 ### Code ###
@@ -11,13 +15,13 @@ The **report** (pdf and source files) are under the `doc` directory.
 
 ## How to use ? ##
 
-To install MetaChar simply clone this repository using this command :
+To install _**MetaChar**_ simply clone this repository using this command :
 ```
 $ git clone git@github.com:Ivan-Roger/NAP09103_CW1.git
 ```
 or download the zip file and extract it.
 
-Make sure you have [Python](https://www.python.org/) and [Flask](http://flask.pocoo.org/) installed.
+Make sure you have [*Python*](https://www.python.org/) and [*Flask*](http://flask.pocoo.org/) installed.
 
 And then run the following commands :
 ```
@@ -30,4 +34,4 @@ You can modify the application settings in the config file : `src/etc/defaults.c
 ## More infos ##
 To get more infos on this project please read the report in the documentation : `doc/report.pdf`
 
-If you find out any issue please report them in the [issue tracker](https://github.com/Ivan-Roger/NAP09103_CW1/issues).
+If you find out any issue please report them in the [**issue tracker**](https://github.com/Ivan-Roger/NAP09103_CW1/issues).
