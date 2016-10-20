@@ -14,6 +14,18 @@
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in quam nec magna dignissim venenatis.
       Integer consectetur justo libero, vitae imperdiet mi tincidunt id. Aenean facilisis pretium feugiat.
     </p>
+    <form action="?" method="GET">
+      <div class="input-group">
+        {% if 'search' in data %}
+        <input type="text" class="form-control" name="tags" value="{{ data.search }}" />
+        {% else %}
+        <input type="text" class="form-control" name="tags" />
+        {% endif %}
+        <div class="input-group-btn">
+          <input type="submit" class="btn btn-primary" value="Search" />
+        </div>
+      </div>
+    </form>
   </article>
   <article class="container">
     <div class="item-list">
