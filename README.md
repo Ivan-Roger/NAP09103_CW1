@@ -7,7 +7,7 @@
 All the source are under the `src` folder.
 
 ### Documentation ###
-The **report** (pdf and source files) are under the `doo` directory.
+The **report** (pdf and source files) are under the `doc` directory.
 
 ## How to use ? ##
 
@@ -21,13 +21,13 @@ Make sure you have [Python](https://www.python.org/) and [Flask](http://flask.po
 
 And then run the following commands :
 ```
-$ cd NAP09103_CW1/src
-$ python main.py
+$ cd NAP09103_CW1
+$ python src/main.py
 ```
 
-You can modify the application settings in the config file : `etc/defaults.cfg`.
+You can modify the application settings in the config file : `src/etc/defaults.cfg`.
 
 ## More infos ##
-To get more infos on this project please read the documentation : `report.pdf`
+To get more infos on this project please read the report in the documentation : `doc/report.pdf`
 
 If you find out any issue please report them in the [issue tracker](https://github.com/Ivan-Roger/NAP09103_CW1/issues).
