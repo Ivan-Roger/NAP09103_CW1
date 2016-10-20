@@ -44,11 +44,17 @@ def route_about():
 @app.route('/universes')
 def route_universes():
 	data = {'config': app_config, 'nav': app_nav, 'active': "/universes", 'list': getUniverseList()}
-	if 'tags' in request.args:
-		tag_filter = request.args['tags']
-		print "Filtered request:", tag_filter
-		data['list'] = filterList(getUniverseList(), tag_filter)
-		data['search'] = tag_filter
+	data['search'] = {}
+	if 'tags' in request.args and not request.args['tags'] == "":
+		tag_filter = request.args['tags'].split(",")
+		print "Filtered by tags:", tag_filter
+		data['list'] = filterListByTags(data['list'], tag_filter)
+		data['search']['tags'] = tag_filter
+	if 'text' in request.args and not request.args['text'] == "":
+		text_filter = request.args['text']
+		print "Filtered by keyword:", text_filter
+		data['list'] = filterListByKeyword(data['list'], text_filter)
+		data['search']['text'] = text_filter
 	return render_template('universes.html', data=data)
 
 @app.route('/universes/<univID>')
@@ -63,11 +69,22 @@ def route_universe(univID):
 @app.route('/characters')
 def route_characters():
 	data = {'config': app_config, 'nav': app_nav, 'active': "/characters", 'list': getCharacterList()}
-	if 'tags' in request.args:
-		tag_filter = request.args['tags']
-		print "Filtered request:", tag_filter
-		data['list'] = filterList(getCharacterList(), tag_filter)
-		data['search'] = tag_filter
+	data['search'] = {}
+	if 'tags' in request.args and not request.args['tags'] == "":
+		tag_filter = request.args['tags'].split(",")
+		print "Filtered by tags:", tag_filter
+		data['list'] = filterListByTags(data['list'], tag_filter)
+		data['search']['tags'] = tag_filter
+	if 'text' in request.args and not request.args['text'] == "":
+		text_filter = request.args['text']
+		print "Filtered by keyword:", text_filter
+		data['list'] = filterListByKeyword(data['list'], text_filter)
+		data['search']['text'] = text_filter
+	if 'univ' in request.args and request.args['univ'] in data_cache['universes']:
+		univ_filter = request.args['univ']
+		print "Filtered by universe:", univ_filter
+		data['list'] = filterListByUniverse(data['list'], univ_filter)
+		data['search']['univ'] = data_cache['universes'][univ_filter]['name']
 	return render_template('characters.html', data=data)
 
 @app.route('/characters/<charID>')
@@ -93,14 +110,29 @@ def parseDown(item):
 		item['full_desc'] = markdown.markdown(item['full_desc'])
 	return item
 
-# Universes
-def filterList(inList, tag):
+def filterListByTags(inList, tags):
 	outList = []
+	tag_set = set(tags)
 	for item in inList:
-		if tag in item['tags']:
+		if tag_set.issubset(set(item['tags'])):
 			outList.append(item)
 	return outList
 
+def filterListByUniverse(inList, univ):
+	outList = []
+	for item in inList:
+		if item['universe']['id'] == univ:
+			outList.append(item)
+	return outList
+
+def filterListByKeyword(inList, keyword):
+	outList = []
+	for item in inList:
+		if keyword in item['name'] or keyword in item['short_desc']:
+			outList.append(item)
+	return outList
+
+# Universes
 def getUniverseList():
 	return data_cache['universes'].values()
 
@@ -164,8 +196,7 @@ def minCharacterData(char):
 def fillCharacterData(char):
 	res = char
 	# Universe
-	res_univ = data_cache['universes'][res['universe']]
-	res['universe'] = {'id': res_univ['id'], 'name': res_univ['name']}
+	res['universe'] = data_cache['universes'][res['universe']]
 	# Allies
 	res_allies = res['allies']
 	res['allies'] = []

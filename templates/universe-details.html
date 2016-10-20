@@ -24,51 +24,53 @@
             {% endfor %}
           </ul>
         </article>
-        <article>
-          <h3>Linked characters</h3>
-          <b>TODO!!</b>
-        </article>
       </div>
-      <aside class="col-md-3">
-        <h3>Medias</h3>
-        <div class="list-group">
-          {% if 'tv_series' in data.univ.medias %}
-            <div class="list-group-item">
-              <h4 class="list-group-item-heading">TV Series</h4>
-              <p class="lis-group-item-text">
-                {% for val in data.univ.medias.tv_series %}
-                  <a target="_blank" href="http://www.imdb.com/title/{{ val }}">IMDB</a>
-                {% endfor %}
-              </p>
-            </div>
-          {% endif %}
-          {% if 'movies' in data.univ.medias %}
-            <div class="list-group-item">
-              <h4 class="list-group-item-heading">Movies</h4>
-              <p class="lis-group-item-text">
-                {% for val in data.univ.medias.movies %}
-                  <a target="_blank" href="http://www.imdb.com/title/{{ val }}">IMDB</a>
-                {% endfor %}
-              </p>
-            </div>
-          {% endif %}
-          {% if 'books' in data.univ.medias %}
-            <div class="list-group-item">
-              <h4 class="list-group-item-heading">Books</h4>
-              <p class="lis-group-item-text">
-                {% for val in data.univ.medias.books %}
-                  <a target="_blank" href="http://www.isbnsearch.org/isbn/{{ val }}">ISBN Search</a>
-                {% endfor %}
-              </p>
-            </div>
-          {% endif %}
-          {% if not data.univ.medias %}
-            <div class="list-group-item">
-              <b>No registered medias.</b>
-            </div>
-          {% endif %}
-        </div>
-      </aside>
+      <div class="col-md-3">
+        <aside>
+          <h3>Medias</h3>
+          <div class="list-group">
+            {% if 'tv_series' in data.univ.medias %}
+              <div class="list-group-item">
+                <h4 class="list-group-item-heading">TV Series</h4>
+                <p class="lis-group-item-text">
+                  {% for val in data.univ.medias.tv_series %}
+                    <a target="_blank" href="http://www.imdb.com/title/{{ val }}">IMDB</a>
+                  {% endfor %}
+                </p>
+              </div>
+            {% endif %}
+            {% if 'movies' in data.univ.medias %}
+              <div class="list-group-item">
+                <h4 class="list-group-item-heading">Movies</h4>
+                <p class="lis-group-item-text">
+                  {% for val in data.univ.medias.movies %}
+                    <a target="_blank" href="http://www.imdb.com/title/{{ val }}">IMDB</a>
+                  {% endfor %}
+                </p>
+              </div>
+            {% endif %}
+            {% if 'books' in data.univ.medias %}
+              <div class="list-group-item">
+                <h4 class="list-group-item-heading">Books</h4>
+                <p class="lis-group-item-text">
+                  {% for val in data.univ.medias.books %}
+                    <a target="_blank" href="http://www.isbnsearch.org/isbn/{{ val }}">ISBN Search</a>
+                  {% endfor %}
+                </p>
+              </div>
+            {% endif %}
+            {% if not data.univ.medias %}
+              <div class="list-group-item">
+                <b>No registered medias.</b>
+              </div>
+            {% endif %}
+          </div>
+        </aside>
+        <aside>
+          <h3>Characters</h3>
+          <p><b><a href="/characters?univ={{data.univ.id}}">See the list</a> of all characters in this universe.</b></p>
+        </aside>
+      </div>
     </div>
   </div>
 </section>

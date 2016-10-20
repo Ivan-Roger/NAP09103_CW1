@@ -6,26 +6,44 @@
 <section>
   <article class="container">
     <h2>List of available characters</h2>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tincidunt massa at placerat vehicula.
-      Nulla feugiat pellentesque fermentum. Pellentesque habitant morbi tristique senectus et netus et
-      malesuada fames ac turpis egestas. Fusce tempus maximus elit vitae lobortis. Praesent nec ornare velit,
-      nec pulvinar ante. Aenean laoreet turpis dui. Proin nec magna ut magna dignissim fringilla.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in quam nec magna dignissim venenatis.
-      Integer consectetur justo libero, vitae imperdiet mi tincidunt id. Aenean facilisis pretium feugiat.
-    </p>
-    <form action="?" method="GET">
-      <div class="input-group">
-        {% if 'search' in data %}
-        <input type="text" class="form-control" name="tags" value="{{ data.search }}" />
-        {% else %}
-        <input type="text" class="form-control" name="tags" />
-        {% endif %}
-        <div class="input-group-btn">
-          <input type="submit" class="btn btn-primary" value="Search" />
+    <form class="row" action="?" method="GET">
+      <div class="form-group col-md-3">
+        <div class="form-control">
+          {% if 'univ' in data.search %}
+            <i class="fa fa-globe"></i>
+            <b>{{ data.search.univ }}</b>
+          {% else %}
+            <i>No selected universe</i>
+          {% endif %}
         </div>
       </div>
+      <div class="form-group col-md-3">
+        <div class="form-control">
+          {% if 'tags' in data.search %}
+            {% for tag in data.search.tags %}
+              <span class="item-tag">
+                <i class="fa fa-tag"></i>
+                <b>{{ tag }}</b>
+              </span>
+            {% endfor %}
+          {% else %}
+            <i>No selected tags</i>
+          {% endif %}
+        </div>
+      </div>
+      <div class="form-group col-md-3">
+        <input type="text" class="form-control" placeholder="Keywords" name="text"
+          {% if 'text' in data.search %}
+            value="{{ data.search.text }}"
+          {% endif %}
+        />
+      </div>
+      <div class="col-md-3 text-right">
+        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
+        <a href="?" class="btn btn-default"><i class="fa fa-times"></i></a>
+      </div>
     </form>
+    <hr/>
   </article>
   <article class="container">
     <div class="item-list">
