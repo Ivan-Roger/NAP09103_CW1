@@ -96,7 +96,7 @@ body {
   padding: 0px;
 }
 
-.item-link .item-pic, .item-link .item-imgLink {
+.item-link .item-pic {
   max-width: 100%;
   max-height: 58px;
   display: block;

@@ -3,6 +3,8 @@
 import ConfigParser
 import json
 import markdown
+from math import ceil
+from urllib import urlencode
 from os import listdir
 from os.path import basename
 from flask import Flask, render_template, flash, redirect, url_for, request
@@ -55,6 +57,7 @@ def route_universes():
 		print "Filtered by keyword:", text_filter
 		data['list'] = filterListByKeyword(data['list'], text_filter)
 		data['search']['text'] = text_filter
+	data = splitListIntoPages(data, request.args);
 	return render_template('universes.html', data=data)
 
 @app.route('/universes/<univID>')
@@ -85,6 +88,7 @@ def route_characters():
 		print "Filtered by universe:", univ_filter
 		data['list'] = filterListByUniverse(data['list'], univ_filter)
 		data['search']['univ'] = data_cache['universes'][univ_filter]['name']
+	data = splitListIntoPages(data, request.args);
 	return render_template('characters.html', data=data)
 
 @app.route('/characters/<charID>')
@@ -95,14 +99,33 @@ def route_character(charID):
 	data = {'config': app_config, 'nav': app_nav, 'active': "/characters", 'char': char_info}
 	return render_template('character-details.html', data=data)
 
-# --- --- ERRORS --- ---
+# --- --- ERRORS --- --- #
 
 @app.errorhandler(404)
 def error_notFound(error):
 	data = {'config': app_config, 'nav': app_nav, 'error': error, 'active': ""}
 	return render_template('e404.html', data=data)
 
-# --- --- DATA PROVIDERS --- ---
+# --- --- Processing funcions --- --- #
+
+def splitListIntoPages(data, urlArgs):
+	args = urlArgs.to_dict()
+	dList = data['list']
+	PAGE_LENGTH = app_config['graphic']['items_per_page']
+	NB_PAGES = int( ceil( len(dList)/float(PAGE_LENGTH) ) )
+	page = int(args.pop('page')) if 'page' in args else 1
+	iMin = (page-1)*PAGE_LENGTH
+	iMax = (page)*PAGE_LENGTH
+	data['list'] = dList[iMin:iMax]
+	data['pages'] = {'cur': page, 'list': []}
+	if page > 1:
+		data['pages']['prev'] = (page-1)
+	if page < NB_PAGES:
+		data['pages']['next'] = (page+1)
+	data['pages']['list'] = range(max(1, page-3), min(NB_PAGES, page+3)+1)
+	url_prefix = urlencode(args)
+	data['pages']['prefix'] = "?"+url_prefix+( "" if url_prefix == "" else "&" )+"page="
+	return data
 
 def parseDown(item):
 	item['short_desc'] = markdown.markdown(item['short_desc'])
@@ -246,6 +269,7 @@ def init(app):
 		# Graphic
 		app_config['graphic']['default_universe_pic'] = config.get("graphic", "default_universe_pic")
 		app_config['graphic']['default_character_pic'] = config.get("graphic", "default_character_pic")
+		app_config['graphic']['items_per_page'] = int(config.get("graphic", "items_per_page"))
 		# Data
 		app_config['data'] = {}
 		app_config['data']['data_folder'] = config.get("data", "ressource_folder")

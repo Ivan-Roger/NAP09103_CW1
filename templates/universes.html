@@ -22,14 +22,14 @@
           {% endif %}
         </div>
       </div>
-      <div class="form-group col-md-5">
-        <input type="text" class="form-control" placeholder="Keywords" name="text"
+      <div class="form-group col-md-6">
+        <input type="text" class="form-control" placeholder="Search text ..." name="text"
           {% if 'text' in data.search %}
             value="{{ data.search.text }}"
           {% endif %}
         />
       </div>
-      <div class="col-md-3 text-right">
+      <div class="col-md-2 text-right btn-group">
         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
         <a href="?" class="btn btn-default"><i class="fa fa-times"></i></a>
       </div>
@@ -42,23 +42,7 @@
         {{ mCommon.univCard(univ, data.config) }}
       {% endfor %}
     </div>
-    <nav class="pagination-nav" aria-label="...">
-      <ul class="pagination">
-        <li class="disabled">
-          <a href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-        <li><a href="?page=2">2</a></li>
-        <li><a href="?page=3">3</a></li>
-        <li>
-          <a href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    {{ mCommon.paginationNav(data.pages) }}
   </article>
 </section>
 {% endblock %}
