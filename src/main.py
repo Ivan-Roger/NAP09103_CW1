@@ -30,7 +30,9 @@ data_cache = {
 @app.route('/')
 def route_root():
 	flash("Welcome !")
-	data = {'config': app_config, 'nav': app_nav, 'active': "/"}
+	data = {'config': app_config, 'nav': app_nav, 'active': "/", 'infos': {}}
+	data['infos']['nb_universes'] = len(data_cache['universes'])
+	data['infos']['nb_characters'] = len(data_cache['characters'])
 	return render_template('index.html', data=data)
 
 @app.route('/about')

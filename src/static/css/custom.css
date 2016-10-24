@@ -19,6 +19,31 @@ body {
   text-align: center;
 }
 
+.numbers > h2 {
+  text-align: center;
+}
+
+.big-number {
+  padding-left: 50px;
+  color: #333;
+  display: block;
+}
+
+.big-number:hover {
+  text-decoration: none;
+  color: #23527c;
+}
+
+.big-number p {
+  padding-left: 50px;
+  font-size: 40px;
+  display: inline-block;
+}
+
+.big-number b {
+  font-size: 60px;
+}
+
 /* --- Lists --- */
 /* Item card */
 
