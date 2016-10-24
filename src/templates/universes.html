@@ -39,7 +39,7 @@
   <article class="container">
     <div class="item-list">
       {% for univ in data.list %}
-        {{ mCommon.univCard(univ, data.config) }}
+        {{ mCommon.univCard(univ, data) }}
       {% endfor %}
     </div>
     {{ mCommon.paginationNav(data.pages) }}

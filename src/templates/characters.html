@@ -48,7 +48,7 @@
   <article class="container">
     <div class="item-list">
       {% for char in data.list %}
-        {{ mCommon.charCard(char, data.config) }}
+        {{ mCommon.charCard(char, data) }}
       {% endfor %}
     </div>
     {{ mCommon.paginationNav(data.pages) }}

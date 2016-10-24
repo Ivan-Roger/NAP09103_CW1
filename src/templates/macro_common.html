@@ -6,14 +6,14 @@
   {% endif %}
 {% endmacro %}
 
-{% macro univCard(univ, config) %}
+{% macro univCard(univ, data) %}
     <div class="item-card col-md-12">
       <div class="row">
         <div class="col-md-4">
           {% if univ.pic %}
             <img class="item-pic" src="{{ univ.pic }}" alt="Universe picture" />
           {% else %}
-            <img class="item-pic" src="{{ url_for('static', filename=config.graphic.default_universe_pic) }}" alt="Universe picture" />
+            <img class="item-pic" src="{{ url_for('static', filename=data.config.graphic.default_universe_pic) }}" alt="Universe picture" />
           {% endif %}
           <small class="item-id">#{{ univ.id }}</small>
         </div>
@@ -26,7 +26,7 @@
         <div class="col-md-8">
           <ul class="item-tags">
             {% for tag in univ.tags %}
-              <li class="item-tag"><i class="fa fa-tag"></i> <a href="/universes?tags={{tag}}" class="text">{{ tag }}</a></li>
+              <li class="item-tag"><i class="fa fa-tag"></i> <a href="/universes{{data.links.prefix_tags}}{{tag}}" class="text">{{ tag }}</a></li>
             {% endfor %}
           </ul>
         </div>
@@ -54,14 +54,14 @@
     </a>
 {% endmacro %}
 
-{% macro charCard(char, config) %}
+{% macro charCard(char, data) %}
     <div class="item-card col-md-12">
       <div class="row">
         <div class="col-md-4">
           {% if char.pic %}
             <img class="item-pic" src="{{ char.pic }}" alt="Character picture" />
           {% else %}
-            <img class="item-pic" src="{{ url_for('static', filename=config.graphic.default_character_pic) }}" alt="Character picture" />
+            <img class="item-pic" src="{{ url_for('static', filename=data.config.graphic.default_character_pic) }}" alt="Character picture" />
           {% endif %}
           <small class="item-id">#{{ char.id }}</small>
         </div>
@@ -76,9 +76,9 @@
       <div class="row">
         <div class="col-md-8">
           <ul class="item-tags">
-            <li class="item-tag"><i class="fa fa-globe"></i> <a href="/characters?univ={{char.universe.id}}" class="text">{{ char.universe.name }}</a></li>
+            <li class="item-tag"><i class="fa fa-globe"></i> <a href="/characters{{data.links.prefix_univ}}{{char.universe.id}}" class="text">{{ char.universe.name }}</a></li>
             {% for tag in char.tags %}
-              <li class="item-tag"><i class="fa fa-tag"></i> <a href="/characters?tags={{tag}}" class="text">{{ tag }}</a></li>
+              <li class="item-tag"><i class="fa fa-tag"></i> <a href="/characters{{data.links.prefix_tags}}{{tag}}" class="text">{{ tag }}</a></li>
             {% endfor %}
           </ul>
         </div>

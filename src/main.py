@@ -51,13 +51,14 @@ def route_universes():
 		tag_filter = request.args['tags'].split(",")
 		print "Filtered by tags:", tag_filter
 		data['list'] = filterListByTags(data['list'], tag_filter)
-		data['search']['tags'] = tag_filter
+		data['search']['tags'] = set(tag_filter)
 	if 'text' in request.args and not request.args['text'] == "":
 		text_filter = request.args['text']
 		print "Filtered by keyword:", text_filter
 		data['list'] = filterListByKeyword(data['list'], text_filter)
 		data['search']['text'] = text_filter
-	data = splitListIntoPages(data, request.args);
+	data = splitListIntoPages(data, request.args)
+	data = getLinksPrefix(data, request.args)
 	return render_template('universes.html', data=data)
 
 @app.route('/universes/<univID>')
@@ -77,7 +78,7 @@ def route_characters():
 		tag_filter = request.args['tags'].split(",")
 		print "Filtered by tags:", tag_filter
 		data['list'] = filterListByTags(data['list'], tag_filter)
-		data['search']['tags'] = tag_filter
+		data['search']['tags'] = set(tag_filter)
 	if 'text' in request.args and not request.args['text'] == "":
 		text_filter = request.args['text']
 		print "Filtered by keyword:", text_filter
@@ -89,6 +90,7 @@ def route_characters():
 		data['list'] = filterListByUniverse(data['list'], univ_filter)
 		data['search']['univ'] = data_cache['universes'][univ_filter]['name']
 	data = splitListIntoPages(data, request.args);
+	data = getLinksPrefix(data, request.args)
 	return render_template('characters.html', data=data)
 
 @app.route('/characters/<charID>')
@@ -125,6 +127,29 @@ def splitListIntoPages(data, urlArgs):
 	data['pages']['list'] = range(max(1, page-3), min(NB_PAGES, page+3)+1)
 	url_prefix = urlencode(args)
 	data['pages']['prefix'] = "?"+url_prefix+( "" if url_prefix == "" else "&" )+"page="
+	return data
+
+def getLinksPrefix(data, urlArgs):
+	args = urlArgs.to_dict()
+	if args.has_key('page'):
+		args.pop('page')
+	data['links'] = {}
+	# Prefix tags
+	args_tags = args.copy()
+	tags_val = ""
+	if args_tags.has_key('tags'):
+		tags_val = args_tags.pop('tags')
+	tags_prefix = urlencode(args_tags)
+	data['links']['prefix_tags'] = "?"+tags_prefix+( "" if tags_prefix == "" else "&" )+"tags="
+	if tags_val!="":
+		data['links']['prefix_tags'] += tags_val+","
+	# Prefix univ
+	if data['active']=="/characters":
+		args_univ = args.copy()
+		if args_univ.has_key('univ') and args_univ['univ']!="":
+			args_univ.pop('univ')
+		univ_prefix = urlencode(args_univ)
+		data['links']['prefix_univ'] = "?"+univ_prefix+( "" if univ_prefix == "" else "&" )+"univ="
 	return data
 
 def parseDown(item):
@@ -170,11 +195,11 @@ def minUniverseData(univ):
 
 def fillUniverseData(univ):
 	res = univ
-	if 'characters' in res['related']:
-		rel_char = res['related']['characters']
-		res['related']['characters'] = []
-		for charID in rel_char:
-			res['related']['characters'].append(data_cache['characters'][charID])
+	# if 'characters' in res['related']:
+	# 	rel_char = res['related']['characters']
+	# 	res['related']['characters'] = []
+	# 	for charID in rel_char:
+	# 		res['related']['characters'].append(data_cache['characters'][charID])
 	return res
 
 def loadUniverseList():
