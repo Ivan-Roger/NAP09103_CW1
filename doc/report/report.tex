@@ -1,0 +1,130 @@
+%FILL THESE IN
+\def\mytitle{Coursework 1 - Report}
+\def\mykeywords{Napier, University, Python, Flask, Web app, Report, MetaChar}
+\def\myauthor{Ivan ROGER}
+\def\contact{40285021@napier.ac.uk}
+\def\mymodule{Advanced Web Technologies (SET09103)}
+%YOU DON'T NEED TO TOUCH ANYTHING BELOW
+\documentclass[10pt, a4paper]{article}
+\usepackage[a4paper,outer=1.5cm,inner=1.5cm,top=1.75cm,bottom=1.5cm]{geometry}
+%\twocolumn
+\usepackage{graphicx}
+\graphicspath{{./images/}}
+%colour our links, remove weird boxes
+\usepackage[colorlinks,linkcolor={black},citecolor={blue!80!black},urlcolor={blue!80!black}]{hyperref}
+%Stop indentation on new paragraphs
+\usepackage[parfill]{parskip}
+%% all this is for Arial
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{uarial}
+\renewcommand{\familydefault}{\sfdefault}
+%Napier logo top right
+\usepackage{watermark}
+%Lorem Ipusm dolor please don't leave any in you final repot ;)
+\usepackage{lipsum}
+\usepackage{xcolor}
+\usepackage{listings}
+%give us the Capital H that we all know and love
+\usepackage{float}
+%tone down the linespacing after section titles
+\usepackage{titlesec}
+%Cool maths printing
+\usepackage{amsmath}
+%PseudoCode
+\usepackage{algorithm2e}
+
+\titlespacing{\subsection}{0pt}{\parskip}{-3pt}
+\titlespacing{\subsubsection}{0pt}{\parskip}{-\parskip}
+\titlespacing{\paragraph}{0pt}{\parskip}{\parskip}
+\newcommand{\figuremacro}[5]{
+    \begin{figure}[#1]
+        \centering
+        \includegraphics[width=#5\columnwidth]{#2}
+        \caption[#3]{\textbf{#3}#4}
+        \label{fig:#2}
+    \end{figure}
+}
+
+\lstset{
+	escapeinside={/*@}{@*/}, language=C++,
+	basicstyle=\fontsize{10}{12}\selectfont,
+	numbers=left,numbersep=2pt,xleftmargin=2pt,frame=tb,
+    columns=fullflexible,showstringspaces=false,tabsize=4,
+    keepspaces=true,showtabs=false,showspaces=false,
+    backgroundcolor=\color{white}, morekeywords={inline,public,
+    class,private,protected,struct},captionpos=t,lineskip=-0.4em,
+	aboveskip=10pt, extendedchars=true, breaklines=true,
+	prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+	keywordstyle=\color[rgb]{0,0,1},
+	commentstyle=\color[rgb]{0.133,0.545,0.133},
+	stringstyle=\color[rgb]{0.627,0.126,0.941}
+}
+
+\thiswatermark{\centering \put(356.5,-38.0){\includegraphics[scale=0.7]{logo}} }
+\title{\mytitle}
+\author{\myauthor\hspace{1em}\\\contact\\Edinburgh Napier University\hspace{0.5em}-\hspace{0.5em}\mymodule}
+\date{}
+\hypersetup{pdfauthor=\myauthor,pdftitle=\mytitle,pdfkeywords=\mykeywords}
+\sloppy
+\begin{document}
+	\maketitle
+	\begin{abstract}
+		This is the my report for the first coursework of the Advanced Web Technologies module (code SET09103) at Edinburgh Napier University. \\
+		This coursework consists in the creation of a basic web application to serve a catalogue of entries. This application should be developed using Python Flask
+	\end{abstract}
+    
+	\textbf{Keywords -- }{\mykeywords}
+    %START FROM HERE
+    
+	\section{Introduction}
+    \subsection{Subject and Name}
+    As a choice for my subject I chose to create a catalogue of fictional characters that can appear in movies, comics, tv series and other medias. As a consequence the app is named \textbf{MetaChar}, meaning that it is a tool to get some informations and meta-data on characters.
+    
+    This tools also provides informations on the universe of each character. The main two aspects of this application are the characters and the universes they are from.
+    
+    \subsection{Goals}
+    When I thought of this application I had multiple ideas of what I wish this tools would be able to do.
+    
+    First of all 
+    
+    % \figuremacro{h}{placeholder}{ImageTitle}{ - Some Descriptive Text}{0.6}
+    
+	\section{Design}
+	\lipsum[1]
+	
+	\figuremacro{h}{nav}{Navigation}{ - The navigation links}{0.6}
+	
+	\subsection{Static serving}
+	
+	\subsection{Templates}
+	
+	\subsection{Storage}
+	
+	\subsection{Universes}
+	
+	\subsection{Characters}
+	
+	\subsection{Search system}
+	
+	\subsection{Graphic style}
+	
+	\section{Enhancements}
+	\begin{description}
+		\item[Creation and Edition] One of the first things that should be implemented if this project was to be really used would be to provide the ability to create new entries in the catalogue and the possibility to edit them afterwards.
+	\end{description}
+	
+	\section{Evaluation}
+	\subsection{Advantages}
+	
+	\subsection{Disadvantages}
+	
+	\section{Development process}
+	\subsection{Difficulties}
+	
+	\subsection{Things I learned}
+	
+	\section{Ressources}
+	
+		
+\end{document}
