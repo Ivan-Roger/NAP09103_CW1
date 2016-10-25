@@ -13,7 +13,13 @@
     </p>
   </article>
   <article class="container">
-    fwdxgfv
+    <h2>Code</h2>
+    You can find all the code and documentation for this project on the git repository : <a href="{{data.code.repo_url}}">{{data.code.repo_name}}</a>
+  </article>
+  <article class="container">
+    <h2>External sources</h2>
+    This application uses multiple external sources :
+    {{ data.sources|safe }}
   </article>
 </section>
 {% endblock %}
