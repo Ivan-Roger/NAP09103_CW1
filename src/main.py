@@ -13,7 +13,7 @@ from flask import Flask, render_template, flash, redirect, url_for, request
 
 app = Flask(__name__)
 app.secret_key="Ic&Ts3IuNS*uAQbc#nur2UUAAme$8xD|"
-app_config = { 'graphic': {}, 'data': {} } # Will be loaded in 'init()'
+app_config = { 'graphic': {}, 'data': {}, 'code': {} } # Will be loaded in 'init()'
 app_nav = [
 	{'name': "Home", 'path': "/"},
 	{'name': "About", 'path': "/about"},
@@ -24,6 +24,17 @@ data_cache = {
 	'universes': {}, 'universe_tags': [],
 	'characters': {}, 'character_tags': [],
 }
+
+class NotFoundEx(Exception):
+	msg = "Ressource not found."
+
+	def __init__(self, msg=None):
+		Exception.__init__(self)
+		if msg is not None:
+			self.msg=msg
+
+	def __str__(self):
+		return self.msg
 
 # --- --- ROUTES --- ---
 
@@ -37,12 +48,19 @@ def route_root():
 
 @app.route('/about')
 def route_about():
+	sourcesFile = open("../doc/sources.md", "r")
+	sourcesMD = markdown.markdown(sourcesFile.read())
+	sourcesFile.close()
+	data = {'config': app_config, 'nav': app_nav, 'active': "/about", 'sources': sourcesMD, 'code': app_config['code']}
+	return render_template('about.html', data=data)
+
+@app.route('/reload')
+def route_reload():
 	loadUniverseList()
 	flash("Reloaded "+str(len(data_cache['universes']))+" universes.")
 	loadCharacterList()
 	flash("Reloaded "+str(len(data_cache['characters']))+" characters.")
-	data = {'config': app_config, 'nav': app_nav, 'active': "/about"}
-	return render_template('about.html', data=data)
+	return redirect(url_for('route_root'))
 
 # Universes
 @app.route('/universes')
@@ -57,23 +75,30 @@ def route_universes():
 	if 'text' in request.args and not request.args['text'] == "":
 		text_filter = request.args['text']
 		print "Filtered by keyword:", text_filter
-		data['list'] = filterListByKeyword(data['list'], text_filter)
 		data['search']['text'] = text_filter
+		data['list'] = filterListByKeyword(data['list'], text_filter.lower())
 	data = splitListIntoPages(data, request.args)
-	data = getLinksPrefix(data, request.args)
+	data = getLinks(data, request.args)
 	return render_template('universes.html', data=data)
 
 @app.route('/universes/<univID>')
 def route_universe(univID):
-	info_file = open(app_config['data']['data_folder']+"/universes/"+univID+".json", "r") # TODO: escape univID
-	univ_info = parseDown( fillUniverseData( json.load(info_file) ) )
-	info_file.close()
-	data = {'config': app_config, 'nav': app_nav, 'active': "/universes", 'univ': univ_info}
-	return render_template('universe-details.html', data=data)
+	try:
+		info_file = open(app_config['data']['data_folder']+"/universes/"+univID+".json", "r") # TODO: escape univID
+		univ_info = json.load(info_file)
+		info_file.close()
+		data_cache['universes'][univID] = minUniverseData(univ_info) # Update cache
+		univ_info = fillUniverseData(univ_info) # Fill data
+		data = {'config': app_config, 'nav': app_nav, 'active': "/universes", 'univ': parseDown(univ_info)}
+		return render_template('universe-details.html', data=data)
+	except IOError:
+		raise NotFoundEx()
+		info_file.close()
 
 # Characters
 @app.route('/characters')
-def route_characters():
+@app.route('/universes/<univID>/characters')
+def route_characters(univID=None):
 	data = {'config': app_config, 'nav': app_nav, 'active': "/characters", 'list': getCharacterList()}
 	data['search'] = {}
 	if 'tags' in request.args and not request.args['tags'] == "":
@@ -84,31 +109,44 @@ def route_characters():
 	if 'text' in request.args and not request.args['text'] == "":
 		text_filter = request.args['text']
 		print "Filtered by keyword:", text_filter
-		data['list'] = filterListByKeyword(data['list'], text_filter)
 		data['search']['text'] = text_filter
-	if 'univ' in request.args and request.args['univ'] in data_cache['universes']:
-		univ_filter = request.args['univ']
-		print "Filtered by universe:", univ_filter
-		data['list'] = filterListByUniverse(data['list'], univ_filter)
-		data['search']['univ'] = data_cache['universes'][univ_filter]['name']
+		data['list'] = filterListByKeyword(data['list'], text_filter.lower())
+	if univID is not None:
+		if univID not in data_cache['universes']:
+			raise NotFoundEx("No such universe")
+		print "Filtered by universe:", univID
+		data['list'] = filterListByUniverse(data['list'], univID)
+		data['search']['univ'] = data_cache['universes'][univID]['name']
 	data = splitListIntoPages(data, request.args);
-	data = getLinksPrefix(data, request.args)
+	data = getLinks(data, request.args)
 	return render_template('characters.html', data=data)
 
-@app.route('/characters/<charID>')
-def route_character(charID):
-	info_file = open(app_config['data']['data_folder']+"/characters/"+charID+".json", "r") # TODO: escape charID
-	char_info = parseDown( fillCharacterData( json.load(info_file) ) )
-	info_file.close()
-	data = {'config': app_config, 'nav': app_nav, 'active': "/characters", 'char': char_info}
-	return render_template('character-details.html', data=data)
+@app.route('/universes/<univID>/characters/<charID>')
+def route_character(univID,charID):
+	try:
+		if univID not in data_cache['universes']:
+			raise NotFoundEx("No such universe")
+		info_file = open(app_config['data']['data_folder']+"/characters/"+charID+".json", "r") # TODO: escape charID
+		char_info = json.load(info_file)
+		info_file.close()
+		if char_info['universe'] != univID:
+			raise NotFoundEx("Wrong universe")
+		data_cache['characters'][charID] = minCharacterData(char_info) # Update cache
+		char_info = fillCharacterData(char_info) # Fill data
+		data = {'config': app_config, 'nav': app_nav, 'active': "/characters", 'char': parseDown(char_info)}
+		return render_template('character-details.html', data=data)
+	except IOError:
+		raise NotFoundEx()
+		info_file.close()
+
 
 # --- --- ERRORS --- --- #
 
 @app.errorhandler(404)
+@app.errorhandler(NotFoundEx)
 def error_notFound(error):
 	data = {'config': app_config, 'nav': app_nav, 'error': error, 'active': ""}
-	return render_template('e404.html', data=data)
+	return render_template('e404.html', data=data), 404
 
 # --- --- Processing funcions --- --- #
 
@@ -131,7 +169,7 @@ def splitListIntoPages(data, urlArgs):
 	data['pages']['prefix'] = "?"+url_prefix+( "" if url_prefix == "" else "&" )+"page="
 	return data
 
-def getLinksPrefix(data, urlArgs):
+def getLinks(data, urlArgs):
 	args = urlArgs.to_dict()
 	if args.has_key('page'):
 		args.pop('page')
@@ -147,11 +185,7 @@ def getLinksPrefix(data, urlArgs):
 		data['links']['prefix_tags'] += tags_val+","
 	# Prefix univ
 	if data['active']=="/characters":
-		args_univ = args.copy()
-		if args_univ.has_key('univ') and args_univ['univ']!="":
-			args_univ.pop('univ')
-		univ_prefix = urlencode(args_univ)
-		data['links']['prefix_univ'] = "?"+univ_prefix+( "" if univ_prefix == "" else "&" )+"univ="
+		data['links']['suffix_univ'] = "?"+urlencode(args)
 	return data
 
 def parseDown(item):
@@ -178,7 +212,7 @@ def filterListByUniverse(inList, univ):
 def filterListByKeyword(inList, keyword):
 	outList = []
 	for item in inList:
-		if keyword in item['name'] or keyword in item['short_desc']:
+		if keyword in item['name'].lower() or keyword in item['short_desc'].lower():
 			outList.append(item)
 	return outList
 
@@ -298,8 +332,10 @@ def init(app):
 		app_config['graphic']['default_character_pic'] = config.get("graphic", "default_character_pic")
 		app_config['graphic']['items_per_page'] = int(config.get("graphic", "items_per_page"))
 		# Data
-		app_config['data'] = {}
 		app_config['data']['data_folder'] = config.get("data", "ressource_folder")
+		# Code
+		app_config['code']['repo_url'] = config.get("code", "repo_url")
+		app_config['code']['repo_name'] = config.get("code", "repo_name")
 		# Config
 		app.config['DEBUG'] = config.get("config", "debug")
 		app.config['ip_address'] = config.get("config", "ip_address")

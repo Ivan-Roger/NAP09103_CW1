@@ -34,7 +34,10 @@
                 <h4 class="list-group-item-heading">TV Series</h4>
                 <p class="lis-group-item-text">
                   {% for val in data.univ.medias.tv_series %}
-                    <a target="_blank" href="http://www.imdb.com/title/{{ val }}">IMDB</a>
+                    <span>
+                      <i class="fa fa-fw fa-film"></i>
+                      <a target="_blank" href="http://www.imdb.com/title/{{ val }}">IMDB</a>
+                    </span>
                   {% endfor %}
                 </p>
               </div>
@@ -44,7 +47,10 @@
                 <h4 class="list-group-item-heading">Movies</h4>
                 <p class="lis-group-item-text">
                   {% for val in data.univ.medias.movies %}
-                    <a target="_blank" href="http://www.imdb.com/title/{{ val }}">IMDB</a>
+                    <span>
+                      <i class="fa fa-fw fa-video-camera"></i>
+                      <a target="_blank" href="http://www.imdb.com/title/{{ val }}">IMDB</a>
+                    </span>
                   {% endfor %}
                 </p>
               </div>
@@ -54,7 +60,10 @@
                 <h4 class="list-group-item-heading">Books</h4>
                 <p class="lis-group-item-text">
                   {% for val in data.univ.medias.books %}
-                    <a target="_blank" href="http://www.isbnsearch.org/isbn/{{ val }}">ISBN Search</a>
+                    <span>
+                      <i class="fa fa-fw fa-book"></i>
+                      <a target="_blank" href="http://www.isbnsearch.org/isbn/{{ val }}">ISBN Search</a>
+                    </span>
                   {% endfor %}
                 </p>
               </div>
@@ -68,7 +77,13 @@
         </aside>
         <aside>
           <h3>Characters</h3>
-          <p><b><a href="/characters?univ={{data.univ.id}}">See the list</a> of all characters in this universe.</b></p>
+          <p>
+            List of all characters in this universe :
+            <a href="/universes/{{data.univ.id}}/characters" class="btn btn-lg btn-primary pull-right">
+              See the full list
+              <i class="fa fa-arrow-right"></i>
+            </a>
+          </p>
         </aside>
       </div>
     </div>

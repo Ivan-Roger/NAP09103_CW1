@@ -76,21 +76,21 @@
       <div class="row">
         <div class="col-md-8">
           <ul class="item-tags">
-            <li class="item-tag"><i class="fa fa-globe"></i> <a href="/characters{{data.links.prefix_univ}}{{char.universe.id}}" class="text">{{ char.universe.name }}</a></li>
+            <li class="item-tag"><i class="fa fa-globe"></i> <a href="/universes/{{char.universe.id}}/characters{{data.links.suffix_univ}}" class="text">{{ char.universe.name }}</a></li>
             {% for tag in char.tags %}
-              <li class="item-tag"><i class="fa fa-tag"></i> <a href="/characters{{data.links.prefix_tags}}{{tag}}" class="text">{{ tag }}</a></li>
+              <li class="item-tag"><i class="fa fa-tag"></i> <a href="{{data.links.prefix_tags}}{{tag}}" class="text">{{ tag }}</a></li>
             {% endfor %}
           </ul>
         </div>
         <div class="col-md-4 text-right">
-          <a href="/characters/{{ char.id }}" class="btn btn-primary">Details <i class="fa fa-caret-right"></i></a>
+          <a href="/universes/{{char.universe.id}}/characters/{{ char.id }}" class="btn btn-primary">Details <i class="fa fa-caret-right"></i></a>
         </div>
       </div>
     </div>
 {% endmacro %}
 
 {% macro charLink(char, config) %}
-    <a class="item-link" href="/characters/{{char.id}}">
+    <a class="item-link" href="/universes/{{char.universe.id}}/characters/{{char.id}}">
       <div class="col-xs-4">
         {% if char.pic %}
         <img class="item-pic" src="{{ char.pic }}" alt="Character picture" />
