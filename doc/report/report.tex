@@ -71,13 +71,15 @@
 	\maketitle
 	\begin{abstract}
 		This is the my report for the first coursework of the Advanced Web Technologies module (code SET09103) at Edinburgh Napier University. \\
-		This coursework consists in the creation of a basic web application to serve a catalogue of entries. This application should be developed using Python Flask
+		This coursework consists in the creation of a basic web application to serve a catalogue of entries. This application should be developed using Python Flask.
 	\end{abstract}
     
 	\textbf{Keywords -- }{\mykeywords}
     %START FROM HERE
     
 	\section{Introduction}
+	The theme of this coursework being free I had to select mine. Here are my choices.
+	
     \subsection{Subject and Name}
     As a choice for my subject I chose to create a catalogue of fictional characters that can appear in movies, comics, tv series and other medias. As a consequence the app is named \textbf{MetaChar}, meaning that it is a tool to get some informations and meta-data on characters.
     
@@ -86,39 +88,106 @@
     \subsection{Goals}
     When I thought of this application I had multiple ideas of what I wish this tools would be able to do.
     
-    First of all 
+    First of all I wanted to give access to the list of universes present in the database. From this list you should be able to get some details about the universe. And to see all the character that are related to it. Similarly for the characters you can get details and see other characters related to it.
     
-    % \figuremacro{h}{placeholder}{ImageTitle}{ - Some Descriptive Text}{0.6}
+    On an other hand i wanted also to be able to search through the entries using a search system. It's implementation is detailed bellow.
+    
+    At last I tried to give the application a specific graphic style that unified through all the pages.
+    
+    \subsection{Universes}
+    A universe is the data structure that represents the englobing container for a world and a collection of characters.
+    
+    \subsection{Characters}
     
 	\section{Design}
-	\lipsum[1]
+	This section will focus on detailing the way this application is designed and how the features were implemented.
 	
 	\figuremacro{h}{nav}{Navigation}{ - The navigation links}{0.6}
 	
+	This figures represents the main pages available.
+	
+	The first one corresponds to the root of the application. On this page you get general informations on the content of the application. Like the number of entries or other news. (See proposals for enhancements [cf. section 3]).
+	
+	The second page consists on a page where you can find all the content about the application. For instance information on the creator and links to the documentation and the source code.
+	
+	The main routes for this application are as following :
+	\begin{description}
+		\item[/universes] This route shows the list of universes. (cf. section 2.4)
+		\item[/universes/<univID>] This URL gives access to a single universe details (cf. section 2.5)
+		\item[/universes/<univID>/characters] Lists all characters in a specific universe.
+		\item[/universes/<univID>/characters/<charID>] Similar to the second route this URL gives access to a single character details.
+		\item[/characters] Similar to the third route, this one shows the list of all characters regardless of their universe.
+	\end{description}
+	
+	The following subsections will explain more deeply how each aspect of the application has been developped.
+	
 	\subsection{Static serving}
+	In order to provide images and other dependancies it has been mandatory to create a specific way to serve files that do not need to be processed on the server.
+	
+	To do so I used the native static file system provided by \textit{Flask}. Everything to be served staticaly is under a '\textit{static}' directory. Files are ordered by type. Style sheets are under the '\textit{css}' folder, '\textit{img}' contains pictures, '\textit{js}' groups the Javascript needed for Bootstrap as well as '\textit{fonts}'.
 	
 	\subsection{Templates}
+	Each page that can be seen uses a \textit{Jinja} template.
+	
+	There is a base template that sets up the navigation at the top and the footer of the page. \\	
+	Each page extends this base template and has a specific content.
+	
+	Some elements are used on multiple pages. To avoid code duplication I used the macro system that \textit{Jinja} provides. It allows to create a sort of function that returns a specific html content depending on the arguments provided. \\
+	Moreover for the character list, two URL use the same template.
+	
+	\begin{lstlisting}[caption = The 'data' object]
+	data = {'config': ..., 'nav': ..., 'active': ..., 'list': ..., 'pages': ..., 'links': ..., 'search': ...}\end{lstlisting}
+	
+	All the data that is needed by the page is passed through a single dictionary called '\textit{data}'. \\
+	The '\textit{data}' object has information on the content of the page, the navigation links and the application configuration.
 	
 	\subsection{Storage}
 	
-	\subsection{Universes}
+	\figuremacro{h}{JsonFiles}{File storage}{ - Some files used to store the items}{0.15}
 	
-	\subsection{Characters}
+	Each item is stored in a plain-text JSON encoded file. All this files are in the '\textit{data}' folder and in a sub-folder depending on whether it is a '\textit{character}' or an '\textit{universe}'.
+	
+	Folders are automatically scanned at start-up and the minimal content is cached in variables. \\
+	The basic data of each item is used the create lists and links to avoid long loading times.
+	When display an entry details we need the full object data so we load the file corresponding to the selected item.
+	
+	\subsection{Entry list}
+	The 'Universes' and 'Characters' pages display a list of the entries that are registered in the application.
+	
+	\figuremacro{h}{CharacterEntry}{List entry}{ - An example of a character entry}{0.8}
+	
+	Each entry is exposed in a card of its minimal information (that are stored in the cache) via a Jinja macro. These informations consists of the picture of the item and it's name, the associated ID and the short description of the entry.
+	
+	Some tags are associated to each item and can be used to search through the catalogue (cf. section 2.6). \\
+	If the entry is a character we can also see the related universe.
+	
+	\subsection{Item details}
+	
+	\figuremacro{h}{CharacterDetails}{Entry details}{ - An example of a character details}{0.6}
+	
+	Each universe and character can be seen in details 
 	
 	\subsection{Search system}
+	
+	\subsection{Pagination}
 	
 	\subsection{Graphic style}
 	
 	\section{Enhancements}
 	\begin{description}
 		\item[Creation and Edition] One of the first things that should be implemented if this project was to be really used would be to provide the ability to create new entries in the catalogue and the possibility to edit them afterwards.
+		\item[Featured items on the home page] The home page is currently quite empty but could show a list of the last items that were added, the one that are the most viewed etc ...
+		\item[More user-friendly search system] It is currently not as easy to use the search system that I wanted it to be. For example we could provide an auto-complete search for the tags (in Javascript).
+		\item[Graphic style re-use] In the universes or characters list we should re-use the graphic style of the links in the details page. 
 	\end{description}
 	
 	\section{Evaluation}
 	\subsection{Advantages}
 	
 	\subsection{Disadvantages}
-	
+	%\begin{description}
+	%\end{description}
+
 	\section{Development process}
 	\subsection{Difficulties}
 	
@@ -126,5 +195,7 @@
 	
 	\section{Ressources}
 	
+	\section{Eratum}
+	As an International student I had to pay a specific attention to the redaction of this report. Could you please give me some feedback on the way it is redacted and the weaknesses of my written expression.
 		
 \end{document}

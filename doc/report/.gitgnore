@@ -1,0 +1,6 @@
+clean.bat
+*.bib
+*.log
+*.out
+*.reference
+*.gz
