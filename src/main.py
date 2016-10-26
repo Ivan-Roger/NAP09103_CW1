@@ -43,7 +43,7 @@ class NotFoundEx(Exception):
 
 @app.route('/')
 def route_root():
-	app.logger.info(request)
+	logRequest()
 	flash("Welcome !")
 	data = {'config': app_config, 'nav': app_nav, 'active': "/", 'infos': {}}
 	data['infos']['nb_universes'] = len(data_cache['universes'])
@@ -52,7 +52,7 @@ def route_root():
 
 @app.route('/about')
 def route_about():
-	app.logger.info(request)
+	logRequest()
 	sourcesFile = open("../doc/sources.md", "r")
 	sourcesMD = markdown.markdown(sourcesFile.read())
 	sourcesFile.close()
@@ -61,7 +61,7 @@ def route_about():
 
 @app.route('/reload')
 def route_reload():
-	app.logger.info(request)
+	logRequest()
 	loadUniverseList()
 	flash("Reloaded "+str(len(data_cache['universes']))+" universes.")
 	loadCharacterList()
@@ -71,12 +71,12 @@ def route_reload():
 # Universes
 @app.route('/universes')
 def route_universes():
-	app.logger.info(request)
+	logRequest()
 	data = {'config': app_config, 'nav': app_nav, 'active': "/universes", 'list': getUniverseList()}
 	data['search'] = {}
 	if 'tags' in request.args and not request.args['tags'] == "":
 		tag_filter = request.args['tags'].split(",")
-		app.logger.info("Filtered by tags: "+tag_filter)
+		app.logger.info("Filtered by tags: "+str(tag_filter))
 		data['list'] = filterListByTags(data['list'], tag_filter)
 		data['search']['tags'] = set(tag_filter)
 	if 'text' in request.args and not request.args['text'] == "":
@@ -90,7 +90,7 @@ def route_universes():
 
 @app.route('/universes/<univID>')
 def route_universe(univID):
-	app.logger.info(request)
+	logRequest()
 	fileName = app_config['data']['data_folder']+"/universes/"+univID+".json"
 	app.logger.info("LOAD - Loading universe #"+univID+" (from: "+fileName+")")
 	try:
@@ -113,12 +113,12 @@ def route_universe(univID):
 @app.route('/characters')
 @app.route('/universes/<univID>/characters')
 def route_characters(univID=None):
-	app.logger.info(request)
+	logRequest()
 	data = {'config': app_config, 'nav': app_nav, 'active': "/characters", 'list': getCharacterList()}
 	data['search'] = {}
 	if 'tags' in request.args and not request.args['tags'] == "":
 		tag_filter = request.args['tags'].split(",")
-		app.logger.info("Filtered by tags: "+tag_filter)
+		app.logger.info("Filtered by tags: "+str(tag_filter))
 		data['list'] = filterListByTags(data['list'], tag_filter)
 		data['search']['tags'] = set(tag_filter)
 	if 'text' in request.args and not request.args['text'] == "":
@@ -138,7 +138,7 @@ def route_characters(univID=None):
 
 @app.route('/universes/<univID>/characters/<charID>')
 def route_character(univID,charID):
-	app.logger.info(request)
+	logRequest()
 	fileName = app_config['data']['data_folder']+"/characters/"+charID+".json" # TODO: escape charID
 	app.logger.info("LOAD - Loading character #"+charID+" (from: "+fileName+")")
 	try:
@@ -346,6 +346,9 @@ def loadCharacterList():
 	app.logger.info("DONE! - Loaded "+str(count)+" characters.")
 
 # --- --- SETUP --- ---
+
+def logRequest():
+	app.logger.info(request.method+": "+request.url)
 
 def init(app):
 	app.logger.info("INIT - Initializing application ...")

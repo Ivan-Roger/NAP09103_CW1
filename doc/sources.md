@@ -1,5 +1,6 @@
 ### Data and informations ###
 * DC Comics - Official website : Character list [**Link**](http://www.dccomics.com/characters)
+* Tardis Wikia : Details on characters [**Link**](http://tardis.wikia.com/wiki/)
 * Wikipedia - Details on characters [**Link**](https://www.wikipedia.org/)
 
 ### Code and frameworks ###
