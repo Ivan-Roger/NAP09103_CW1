@@ -3,6 +3,8 @@
 import ConfigParser
 import json
 import markdown
+import logging
+from logging.handlers import RotatingFileHandler
 from math import ceil
 from urllib import urlencode
 from os import listdir
@@ -13,7 +15,8 @@ from flask import Flask, render_template, flash, redirect, url_for, request
 
 app = Flask(__name__)
 app.secret_key="Ic&Ts3IuNS*uAQbc#nur2UUAAme$8xD|"
-app_config = { 'graphic': {}, 'data': {}, 'code': {} } # Will be loaded in 'init()'
+# app_config: Will be loaded in 'init()'
+app_config = { 'graphic': {}, 'data': {}, 'code': {}, 'logging': {} }
 app_nav = [
 	{'name': "Home", 'path': "/"},
 	{'name': "About", 'path': "/about"},
@@ -40,6 +43,7 @@ class NotFoundEx(Exception):
 
 @app.route('/')
 def route_root():
+	app.logger.info(request)
 	flash("Welcome !")
 	data = {'config': app_config, 'nav': app_nav, 'active': "/", 'infos': {}}
 	data['infos']['nb_universes'] = len(data_cache['universes'])
@@ -48,6 +52,7 @@ def route_root():
 
 @app.route('/about')
 def route_about():
+	app.logger.info(request)
 	sourcesFile = open("../doc/sources.md", "r")
 	sourcesMD = markdown.markdown(sourcesFile.read())
 	sourcesFile.close()
@@ -56,6 +61,7 @@ def route_about():
 
 @app.route('/reload')
 def route_reload():
+	app.logger.info(request)
 	loadUniverseList()
 	flash("Reloaded "+str(len(data_cache['universes']))+" universes.")
 	loadCharacterList()
@@ -65,16 +71,17 @@ def route_reload():
 # Universes
 @app.route('/universes')
 def route_universes():
+	app.logger.info(request)
 	data = {'config': app_config, 'nav': app_nav, 'active': "/universes", 'list': getUniverseList()}
 	data['search'] = {}
 	if 'tags' in request.args and not request.args['tags'] == "":
 		tag_filter = request.args['tags'].split(",")
-		print "Filtered by tags:", tag_filter
+		app.logger.info("Filtered by tags: "+tag_filter)
 		data['list'] = filterListByTags(data['list'], tag_filter)
 		data['search']['tags'] = set(tag_filter)
 	if 'text' in request.args and not request.args['text'] == "":
 		text_filter = request.args['text']
-		print "Filtered by keyword:", text_filter
+		app.logger.info("Filtered by keyword: "+text_filter)
 		data['search']['text'] = text_filter
 		data['list'] = filterListByKeyword(data['list'], text_filter.lower())
 	data = splitListIntoPages(data, request.args)
@@ -83,38 +90,46 @@ def route_universes():
 
 @app.route('/universes/<univID>')
 def route_universe(univID):
+	app.logger.info(request)
+	fileName = app_config['data']['data_folder']+"/universes/"+univID+".json"
+	app.logger.info("LOAD - Loading universe #"+univID+" (from: "+fileName+")")
 	try:
-		info_file = open(app_config['data']['data_folder']+"/universes/"+univID+".json", "r") # TODO: escape univID
-		univ_info = json.load(info_file)
-		info_file.close()
-		data_cache['universes'][univID] = minUniverseData(univ_info) # Update cache
-		univ_info = fillUniverseData(univ_info) # Fill data
-		data = {'config': app_config, 'nav': app_nav, 'active': "/universes", 'univ': parseDown(univ_info)}
-		return render_template('universe-details.html', data=data)
-	except IOError:
-		raise NotFoundEx()
-		info_file.close()
+		try:
+			info_file = open(fileName, "r") # TODO: escape univID
+			univ_info = json.load(info_file)
+			info_file.close()
+			data_cache['universes'][univID] = minUniverseData(univ_info) # Update cache
+			univ_info = fillUniverseData(univ_info) # Fill data
+			data = {'config': app_config, 'nav': app_nav, 'active': "/universes", 'univ': parseDown(univ_info)}
+			return render_template('universe-details.html', data=data)
+		except IOError:
+			raise NotFoundEx()
+			info_file.close()
+	except NotFoundEx as e:
+		app.logger.error("ERROR - "+str(e)+" / #"+univID)
+		raise e
 
 # Characters
 @app.route('/characters')
 @app.route('/universes/<univID>/characters')
 def route_characters(univID=None):
+	app.logger.info(request)
 	data = {'config': app_config, 'nav': app_nav, 'active': "/characters", 'list': getCharacterList()}
 	data['search'] = {}
 	if 'tags' in request.args and not request.args['tags'] == "":
 		tag_filter = request.args['tags'].split(",")
-		print "Filtered by tags:", tag_filter
+		app.logger.info("Filtered by tags: "+tag_filter)
 		data['list'] = filterListByTags(data['list'], tag_filter)
 		data['search']['tags'] = set(tag_filter)
 	if 'text' in request.args and not request.args['text'] == "":
 		text_filter = request.args['text']
-		print "Filtered by keyword:", text_filter
+		app.logger.info("Filtered by keyword: "+text_filter)
 		data['search']['text'] = text_filter
 		data['list'] = filterListByKeyword(data['list'], text_filter.lower())
 	if univID is not None:
 		if univID not in data_cache['universes']:
 			raise NotFoundEx("No such universe")
-		print "Filtered by universe:", univID
+		app.logger.info("Filtered by universe: "+univID)
 		data['list'] = filterListByUniverse(data['list'], univID)
 		data['search']['univ'] = data_cache['universes'][univID]['name']
 	data = splitListIntoPages(data, request.args);
@@ -123,21 +138,28 @@ def route_characters(univID=None):
 
 @app.route('/universes/<univID>/characters/<charID>')
 def route_character(univID,charID):
+	app.logger.info(request)
+	fileName = app_config['data']['data_folder']+"/characters/"+charID+".json" # TODO: escape charID
+	app.logger.info("LOAD - Loading character #"+charID+" (from: "+fileName+")")
 	try:
-		if univID not in data_cache['universes']:
-			raise NotFoundEx("No such universe")
-		info_file = open(app_config['data']['data_folder']+"/characters/"+charID+".json", "r") # TODO: escape charID
-		char_info = json.load(info_file)
-		info_file.close()
-		if char_info['universe'] != univID:
-			raise NotFoundEx("Wrong universe")
-		data_cache['characters'][charID] = minCharacterData(char_info) # Update cache
-		char_info = fillCharacterData(char_info) # Fill data
-		data = {'config': app_config, 'nav': app_nav, 'active': "/characters", 'char': parseDown(char_info)}
-		return render_template('character-details.html', data=data)
-	except IOError:
-		raise NotFoundEx()
-		info_file.close()
+		try:
+			if univID not in data_cache['universes']:
+				raise NotFoundEx("No such universe")
+			info_file = open(fileName, "r")
+			char_info = json.load(info_file)
+			info_file.close()
+			if char_info['universe'] != univID:
+				raise NotFoundEx("Wrong universe")
+			data_cache['characters'][charID] = minCharacterData(char_info) # Update cache
+			char_info = fillCharacterData(char_info) # Fill data
+			data = {'config': app_config, 'nav': app_nav, 'active': "/characters", 'char': parseDown(char_info)}
+			return render_template('character-details.html', data=data)
+		except IOError:
+			raise NotFoundEx()
+			info_file.close()
+	except NotFoundEx as e:
+		app.logger.error("ERROR - "+str(e)+" / #"+charID)
+		raise e
 
 
 # --- --- ERRORS --- --- #
@@ -146,7 +168,12 @@ def route_character(univID,charID):
 @app.errorhandler(NotFoundEx)
 def error_notFound(error):
 	data = {'config': app_config, 'nav': app_nav, 'error': error, 'active': ""}
+	app.logger.error("ERROR - "+error)
 	return render_template('e404.html', data=data), 404
+
+@app.errorhandler(500)
+def error_notFound(error):
+	app.logger.error("ERROR - "+str(error))
 
 # --- --- Processing funcions --- --- #
 
@@ -240,13 +267,13 @@ def fillUniverseData(univ):
 
 def loadUniverseList():
 	folderPath = app_config['data']['data_folder']+"/universes/"
-	print "Loading universes ( from:", folderPath, ")"
+	app.logger.info("LOAD - Loading universes (from: "+folderPath+")")
 	# Reset
 	data_cache['universe_tags'] = {}
 	# Walking on each file
 	files = listdir(folderPath)
 	for info_file in files:
-		print "\tFile:", info_file
+		app.logger.debug("\tFile: "+info_file)
 		# Loading JSON Object from file
 		filePtr = open(folderPath+info_file)
 		jsonObj = parseDown( minUniverseData( json.load(filePtr) ) )
@@ -259,7 +286,8 @@ def loadUniverseList():
 				data_cache['universe_tags'][t].append(jsonObj['id'])
 			else:
 				data_cache['universe_tags'][t] = [jsonObj['id']]
-	print "DONE ! Loaded", len(data_cache['universes']), "files."
+	count = len(data_cache['universes'])
+	app.logger.info("DONE! - Loaded "+str(count)+" universes.")
 
 # Characters
 def getCharacterList():
@@ -295,13 +323,13 @@ def fillCharacterData(char):
 
 def loadCharacterList():
 	folderPath = app_config['data']['data_folder']+"/characters/"
-	print "Loading characters ( from:", folderPath, ")"
+	app.logger.info("LOAD - Loading characters (from: "+folderPath+")")
 	# Reset
 	data_cache['character_tags'] = {}
 	# Walking on each file
 	files = listdir(folderPath)
 	for info_file in files:
-		print "\tFile:", info_file
+		app.logger.debug("\tFile: "+info_file)
 		# Loading JSON Object from file
 		filePtr = open(folderPath+info_file)
 		jsonObj = parseDown( minCharacterData( json.load(filePtr) ) )
@@ -314,11 +342,13 @@ def loadCharacterList():
 				data_cache['character_tags'][t].append(jsonObj['id'])
 			else:
 				data_cache['character_tags'][t] = [jsonObj['id']]
-	print "DONE ! Loaded", len(data_cache['characters']), "files."
+	count = len(data_cache['characters'])
+	app.logger.info("DONE! - Loaded "+str(count)+" characters.")
 
 # --- --- SETUP --- ---
 
 def init(app):
+	app.logger.info("INIT - Initializing application ...")
 	config = ConfigParser.ConfigParser ()
 	try:
 		config_location = "etc/defaults.cfg"
@@ -336,22 +366,38 @@ def init(app):
 		# Code
 		app_config['code']['repo_url'] = config.get("code", "repo_url")
 		app_config['code']['repo_name'] = config.get("code", "repo_name")
-		# Config
+		# Main config
 		app.config['DEBUG'] = config.get("config", "debug")
 		app.config['ip_address'] = config.get("config", "ip_address")
 		app.config['port'] = config.get("config", "port")
 		app.config['url'] = config.get("config", "url")
-		app_config['locale'] = config.get("config", "locale")
+		#app_config['locale'] = config.get("config", "locale")
+		# Logging
+		app_config['logging']['file'] = config.get("logging", "name")
+		app_config['logging']['location'] = config.get("logging", "location")
+		app_config['logging']['level'] = config.get("logging", "level")
 	except IOError as e:
-		print "ERROR: Could not read configs from", config_location
-		print "\t>>", e
+		app.logger.error("ERROR - Could not read configs from: "+config_location)
+		app.logger.error("\t>>"+str(e))
 	# loading cached data
 	loadUniverseList()
 	loadCharacterList()
 
+def logs(app):
+	log_pathname = app_config['logging']['location'] + app_config['logging']['file']
+	file_handler = RotatingFileHandler(log_pathname, maxBytes=1024*1024*10, backupCount=1024)
+	file_handler.setLevel(app_config['logging']['level'])
+	formatter = logging.Formatter("%(levelname)s | %(asctime)s | %(module)s | %(funcName)s | %(message)s")
+	file_handler.setFormatter(formatter)
+	app.logger.setLevel(app_config['logging']['level'])
+	app.logger.addHandler(file_handler)
+
 if __name__ == '__main__':
-    init(app)
-    app.run(
-        host=app.config['ip_address'],
-        port=int(app.config['port'])
-    )
+	init(app)
+	logs(app)
+	app.logger.info("START - Application started !")
+	app.run(
+	    host=app.config['ip_address'],
+	    port=int(app.config['port'])
+	)
+	app.logger.info("STOP - Application ended !")
