@@ -1,6 +1,0 @@
-doc/report/clean.bat
-doc/report/*.bib
-doc/report/*.log
-doc/report/*.out
-doc/report/*.reference
-doc/report/*.gz
