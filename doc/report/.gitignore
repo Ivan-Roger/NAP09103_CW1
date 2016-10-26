@@ -2,5 +2,6 @@ clean.bat
 *.bib
 *.log
 *.out
+*.aux
 *.reference
 *.gz

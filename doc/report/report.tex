@@ -94,15 +94,17 @@
     
     At last I tried to give the application a specific graphic style that unified through all the pages.
     
-    \subsection{Universes}
+    \subsection{Universes}  % TODO
     A universe is the data structure that represents the englobing container for a world and a collection of characters.
+    \lipsum[1]
     
-    \subsection{Characters}
+    \subsection{Characters}  % TODO
+    \lipsum[1]
     
 	\section{Design}
 	This section will focus on detailing the way this application is designed and how the features were implemented.
 	
-	\figuremacro{h}{nav}{Navigation}{ - The navigation links}{0.6}
+	\figuremacro{h}{nav}{Navigation}{ - The navigation links}{0.4}
 	
 	This figures represents the main pages available.
 	
@@ -165,37 +167,78 @@
 	
 	\figuremacro{h}{CharacterDetails}{Entry details}{ - An example of a character details}{0.6}
 	
-	Each universe and character can be seen in details 
+	Each universe and character can be seen in details and is assigned a unique URL composed of his ID.
+	
+	On this page we are able to see the picture and name at the top and both short and long descriptions.\\
+	Depending on the type of item this page also shows related characters or medias.
 	
 	\subsection{Search system}
 	
+	On the list of entries you can search for a specific entry. On the previous figure we can see that the results are filtered to only show entries of the "Doctor Who" universe and having the "Human" tag. We can also search for text in the name or in the short description.
+	
+	\figuremacro{h}{SearchSystem}{Search bar}{}{0.8}
+	
+	Each filter can be combined with others. For example on the figure we use both the tag and universe filter. The last button (the cross) allows the user to clear all filters.
+	
+	All filters are in the query string so the URL can be bookmarked and re-visited later-on, the content would be exactly the same.
+	
 	\subsection{Pagination}
 	
+	\figuremacro{h}{Pagination}{Pagination system}{}{0.2}
+	
+	On the catalogue there are many entries and displaying all of them in a single page would make it really long and annoying to read so I created a pagination system to split the content into pages.
+	
+	The number of items displayed per page can be customized in the configuration.
+	
+	The navigation keeps the context. So for example, if you were using a filter the next page will show only the content of this same filter.
+	
+	\subsection{Logging}
+	
+	\begin{lstlisting}[caption = A line of the log file]
+	INFO | 2016-10-26 11:18:41,173 | main | logRequest | GET: http://localhost:5000/universes\end{lstlisting}
+	
+	The application has a logging system that keeps track of the requests and registers critical steps of processing. Each error is saved in order to be able to ensure that the application is working properly at all times.
+	
 	\subsection{Graphic style}
+	A consequent amount of time has been spent on trying to make the application look nice and being user-friendly. I tried my best to make sure that everything was intuitive and easy to use.
+	
+	I have a followed some common guides-lines through the pages and did my best to keep the same colour scheme and to have the items ordered the same way on all pages .
 	
 	\section{Enhancements}
+	Some of these enhancements are available on github in the issue tracker as features.
 	\begin{description}
-		\item[Creation and Edition] One of the first things that should be implemented if this project was to be really used would be to provide the ability to create new entries in the catalogue and the possibility to edit them afterwards.
-		\item[Featured items on the home page] The home page is currently quite empty but could show a list of the last items that were added, the one that are the most viewed etc ...
-		\item[More user-friendly search system] It is currently not as easy to use the search system that I wanted it to be. For example we could provide an auto-complete search for the tags (in Javascript).
-		\item[Graphic style re-use] In the universes or characters list we should re-use the graphic style of the links in the details page. 
+		\item[A) Creation and Edition] One of the first things that should be implemented if this project was to be really used would be to provide the ability to create new entries in the catalogue and the possibility to edit them afterwards.
+		\item[B) Featured items on the home page] The home page is currently quite empty but could show a list of the last items that were added, the one that are the most viewed etc ...
+		\item[C) More user-friendly search system] It is currently not as easy to use the search system that I wanted it to be. For example we could provide an auto-complete search for the tags (in Javascript).
+		\item[D) Graphic style re-use] In the universes or characters list we should re-use the graphic style of the links in the details page. 
+		\item[E) Optimize load time] When displaying a list all entries are processed but only 5 at most are shown by page. To win some loading time we could process only the entries that would be displayed in the end. 
+		\item[F) Accounts and deletion] It is possible that we may want to delete an entry. To do so it would be necessary to create an account system to only allow this critical action to administrators.
+		\item[G) Unit tests] To make sure that the app always works when used in production we should redact en run some unit tests. So that the application is in a continuous integration.
+		\item[H) Medias details] The current system to show media related to a universe is not really welcoming. To make it more friendly we could shows those information on a separate page and provide more details on each media, like the name, author(s) and release dates.
+		\item[I) Translations] Use different templates depending on the user locale variable. Using babel maybe ?
 	\end{description}
 	
 	\section{Evaluation}
-	\subsection{Advantages}
+	In this section we will make a critical self-assessment of the result and current state of this project. 
 	
-	\subsection{Disadvantages}
-	%\begin{description}
-	%\end{description}
+	\subsection{Advantages} % TODO
+	I consider that the main advantage of this application is its good appearance. As described in the section 2.9 I really did my best to have a good user interface. The few features that are implemented are fully finished. I preferred to make sure that the thing I had done worked perfectly well before done anything else.
+	
+	\subsection{Disadvantages} % TODO
+	On another hand this application remains quite basic and could provide a lot more features. As the Enhancements sections shows there is a lot more that could have been done.
+	
+	If I had more time and managed it's use more wisely. I probably spent too much time trying to get the app look good but which gave me less time to implement new functionalities.
+	
+	
 
-	\section{Development process}
-	\subsection{Difficulties}
+	\section{Conclusion} 
+	\subsection{Difficulties}  % TODO
 	
-	\subsection{Things I learned}
+	\subsection{Things I learned}  % TODO
 	
-	\section{Ressources}
+	\section{Ressources}  % TODO
 	
 	\section{Eratum}
-	As an International student I had to pay a specific attention to the redaction of this report. Could you please give me some feedback on the way it is redacted and the weaknesses of my written expression.
+	As an International student I had to pay a specific attention to the redaction of this report. Could you please give me some feedback on the way it is redacted and the weaknesses in my written expression.
 		
 \end{document}
