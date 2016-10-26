@@ -33,6 +33,9 @@
 \usepackage{amsmath}
 %PseudoCode
 \usepackage{algorithm2e}
+%Links
+\usepackage{hyperref}
+
 
 \titlespacing{\subsection}{0pt}{\parskip}{-3pt}
 \titlespacing{\subsubsection}{0pt}{\parskip}{-\parskip}
@@ -94,12 +97,15 @@
     
     At last I tried to give the application a specific graphic style that unified through all the pages.
     
-    \subsection{Universes}  % TODO
-    A universe is the data structure that represents the englobing container for a world and a collection of characters.
-    \lipsum[1]
+    \subsection{Universes}
+    A universe is the data structure that represents the container for a world and a collection of characters.
     
-    \subsection{Characters}  % TODO
-    \lipsum[1]
+    It is composed of a name, a picture, a short and long description, and a list of medias that have hosted this universe.
+    
+    \subsection{Characters}
+    A character is the data structure used to represent any fictional character that may appear in the universe.
+    
+    Each character as a name, a picture, a short and a long description, a universe that he belongs to, some tags and other related characters (allies and enemies).
     
 	\section{Design}
 	This section will focus on detailing the way this application is designed and how the features were implemented.
@@ -145,7 +151,7 @@
 	
 	\subsection{Storage}
 	
-	\figuremacro{h}{JsonFiles}{File storage}{ - Some files used to store the items}{0.15}
+	\figuremacro{h}{JsonFiles}{File storage}{ - Some files used to store the items}{0.13}
 	
 	Each item is stored in a plain-text JSON encoded file. All this files are in the '\textit{data}' folder and in a sub-folder depending on whether it is a '\textit{character}' or an '\textit{universe}'.
 	
@@ -232,13 +238,43 @@
 	
 
 	\section{Conclusion} 
-	\subsection{Difficulties}  % TODO
+	\subsection{Difficulties}
+	I had some troubles to manage my time for this coursework because I didn't plan exactly what  I was going to do so I ended up doing most of the stuff during the last week and still hadn't redacted my report.
 	
-	\subsection{Things I learned}  % TODO
+	I spent another amount of time on the search system and the pagination. As I didn't really know how and what I exactly wanted to have.
 	
-	\section{Ressources}  % TODO
+	The rules for this coursework being a bit vague I had to take some decision and judge by myself which choice were good and which weren't.
 	
-	\section{Eratum}
-	As an International student I had to pay a specific attention to the redaction of this report. Could you please give me some feedback on the way it is redacted and the weaknesses in my written expression.
+	\subsection{Things I learned}
+	This project gave me confidence in my ability to start and create an application from scratch. I have learned from the difficulties I encountered.
+	
+	I learned that it is important to redact what I am going to do before beginning to do anything and if needed modify expectation during the development.\\	
+	I learned how to use Flask and strengthened my skills using python as a programming language.\\	
+	I had the chance to think and design a URL pseudo-API by myself and to implement it. \\
+	This project was also a place for me to use my self-learning skills as I had to face some errors and couldn't ask every single time I had a problem.
+	
+	\section{Ressources}
+	\textbf{Data and informations}
+	\begin{itemize}
+		\item \href{http://www.dccomics.com/characters}{DC Comics - Official website : Character list}
+		\item \href{https://www.wikipedia.org/}{Wikipedia - Details on characters}
+		\item \href{http://tardis.wikia.com/wiki/}{Tardis Wikia : Details on characters}
+	\end{itemize}
+	\textbf{Code and frameworks}
+	\begin{itemize}
+		\item \href{http://getbootstrap.com}{Bootstrap : CSS framework}
+		\item \href{http://fontawesome.io/}{Font Awesome : Icon font pack}
+		\item \href{http://pythonhosted.org/Markdown/index.html}{Markdown (for python)}
+	\end{itemize}
+	\textbf{Documentation}
+	\begin{itemize}
+		\item \href{http://jinja.pocoo.org/docs/dev/}{Jinja2}
+		\item \href{http://flask.pocoo.org/docs/0.11/api}{Flask}
+		\item \href{http://werkzeug.pocoo.org/docs/0.11/}{Werkzeug (python framework used by Flask)}
+	\end{itemize}
+	\textbf{Report}
+	\begin{itemize}
+		\item \href{https://github.com/edinburgh-napier/aux_latex_cw_template}{Coursework report template}
+	\end{itemize}
 		
 \end{document}
