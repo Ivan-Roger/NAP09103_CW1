@@ -167,28 +167,49 @@
 	
 	\figuremacro{h}{CharacterDetails}{Entry details}{ - An example of a character details}{0.6}
 	
-	Each universe and character can be seen in details 
+	Each universe and character can be seen in details and is assigned a unique URL composed of his ID.
+	
+	On this page we are able to see the picture and name at the top and both short and long descriptions.\\
+	Depending on the type of item this page also shows related characters or medias.
 	
 	\subsection{Search system}
 	
+	\figuremacro{h}{SearchSystem}{Search bar}{}{0.6}
+	
+	On the list of entries you can search for a specific entry. On the previous figure we can see that the results are filtered to only show entries of the "Doctor Who" universe and having the "Human" tag. We can also search for text in the name or in the short description.
+	
+	Each filter can be combined with others. For example on the figure we use both the tag and universe filter. The last button (the cross) allows the user to clear all filters.
+	
+	All filters are in the query string so the URL can be bookmarked and re-visited later-on, the content would be exactly the same.
+	
 	\subsection{Pagination}
+	
+	\figuremacro{h}{Pagination}{Pagination system}{}{0.6}
+	
+	On the catalogue there are many entries and displaying all of them in a single page would make it really long and annoying to read so I created a pagination system to split the content into pages.
+	
+	The number of items displayed per page can be customized in the configuration.
+	
+	The navigation keeps the context. So for example, if you were using a filter the next page will show only the content of this same filter.
+	
+	\subsection{Logging}
 	
 	\subsection{Graphic style}
 	
 	\section{Enhancements}
 	\begin{description}
-		\item[Creation and Edition] One of the first things that should be implemented if this project was to be really used would be to provide the ability to create new entries in the catalogue and the possibility to edit them afterwards.
-		\item[Featured items on the home page] The home page is currently quite empty but could show a list of the last items that were added, the one that are the most viewed etc ...
-		\item[More user-friendly search system] It is currently not as easy to use the search system that I wanted it to be. For example we could provide an auto-complete search for the tags (in Javascript).
-		\item[Graphic style re-use] In the universes or characters list we should re-use the graphic style of the links in the details page. 
+		\item[A) Creation and Edition] One of the first things that should be implemented if this project was to be really used would be to provide the ability to create new entries in the catalogue and the possibility to edit them afterwards.
+		\item[B) Featured items on the home page] The home page is currently quite empty but could show a list of the last items that were added, the one that are the most viewed etc ...
+		\item[C) More user-friendly search system] It is currently not as easy to use the search system that I wanted it to be. For example we could provide an auto-complete search for the tags (in Javascript).
+		\item[D) Graphic style re-use] In the universes or characters list we should re-use the graphic style of the links in the details page. 
+		\item[E) Optimize load time] When displaying a list all entries are processed but only 5 at most are shown by page. To win some loading time we could process only the entries that would be displayed in the end. 
 	\end{description}
 	
 	\section{Evaluation}
 	\subsection{Advantages}
 	
 	\subsection{Disadvantages}
-	%\begin{description}
-	%\end{description}
+	// Cf. to Enhancements //
 
 	\section{Development process}
 	\subsection{Difficulties}
